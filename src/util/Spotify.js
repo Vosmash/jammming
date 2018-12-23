@@ -42,8 +42,8 @@ const Spotify = {
       )
   },
 
-  savePlaylist(playlistName, tracksURI) {
-    accessToken = Spotify.getAccessToken();
+  savePlaylist(playlistName, trackURIs) {
+    Spotify.getAccessToken();
     const endpoint = 'https://api.spotify.com/v1/me'
 
     const userID = fetch(endpoint, { headers: {Authorization: `Bearer ${accessToken}`} }).then(response => {
@@ -59,9 +59,7 @@ const Spotify = {
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-            name: playlistName,
-            })
+      body: JSON.stringify({ name: playlistName })
     }).then(response => {
       return response.json();
     }).then(jsonResponse => {
@@ -69,15 +67,13 @@ const Spotify = {
     })
 
   //add tracks to the playlist
-    fetch(`https://api.spotify.com//v1/users/${userID}/playlists/${playlistID}/tracks`, {
+   fetch(`https://api.spotify.com//v1/users/${userID}/playlists/${playlistID}/tracks`, {
       method: "POST",
-        headers: {
+      headers: {
           Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          uris: tracksURI
-        })
+      body: JSON.stringify({ uris: trackURIs })
       }
      )
   }
