@@ -13,8 +13,8 @@ class App extends Component {
       playlistName: "My Playlist",
       playlistTracks: []
     };
-    this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
+    this.addTrack = this.addTrack.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
@@ -43,7 +43,10 @@ class App extends Component {
     let trackURI = [];
     this.state.playlistTracks.forEach(track => trackURI.push(track.uri));
     Spotify.savePlaylist(this.state.playlistName, trackURI);
-    this.setState({ playlistName: "My Playlist", playlistTracks: [] })
+    this.setState({
+      playlistName: "My Playlist",
+      playlistTracks: []
+    });
   }
 
   search(term) {
