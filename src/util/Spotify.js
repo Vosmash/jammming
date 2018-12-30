@@ -1,5 +1,5 @@
 const clientID = '061f2a636fbf4af3a1b5ffc8db23d8bb';
-const redirectURI = "https://vosmash.github.io/jammming/";
+const redirectURI = "http://vosmash.surge.sh/";
 let accessToken = null;
 
 const Spotify = {
