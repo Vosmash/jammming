@@ -1,5 +1,5 @@
 const clientID = '061f2a636fbf4af3a1b5ffc8db23d8bb';
-const redirectURI = "http://localhost:3000/";
+const redirectURI = "https://jammming-api.herokuapp.com/";
 let accessToken = null;
 
 export let Spotify = {
