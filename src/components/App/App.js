@@ -3,7 +3,8 @@ import './App.css';
 import SearchBar from '../SearchBar/SearchBar.js';
 import SearchResults from '../SearchResults/SearchResults.js';
 import Playlist from '../Playlist/Playlist.js';
-import Spotify from '../../util/Spotify.js';
+import {Spotify} from '../../util/Spotify.js';
+import PlaylistSearch from '../PlaylistSearch/PlaylistSearch.js';
 
 class App extends Component {
   constructor(props) {
@@ -11,10 +12,11 @@ class App extends Component {
     this.state = {
       searchResults: [],
       playlistName: "My Playlist",
-      playlistTracks: []
+      playlistTracks: [],
+      playlistsTracks: []
     };
-    this.removeTrack = this.removeTrack.bind(this);
     this.addTrack = this.addTrack.bind(this);
+    this.removeTrack = this.removeTrack.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
@@ -50,8 +52,8 @@ class App extends Component {
   }
 
   search(term) {
-    Spotify.search(term).then(searchResults => {
-      this.setState({ searchResults: searchResults })
+    Spotify.search(term).then(results => {
+      this.setState({ searchResults: results })
     });
   }
 
@@ -65,6 +67,7 @@ class App extends Component {
             <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack}/>
             <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} onRemove={this.removeTrack} onNameChange={this.updatePlaylistName} onSave={this.savePlaylist}/>
           </div>
+            <PlaylistSearch />
         </div>
       </div>
     );

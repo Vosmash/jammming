@@ -1,0 +1,44 @@
+.user {
+  margin-bottom: 1rem;
+  display: flex;
+  width: 50%;
+  justify-content: flex-start;
+  padding-top: 0.5rem;
+  border: 1px solid;
+  color: white;
+}
+
+.user img {
+  width: 30%;
+  margin: 0.25rem;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  color: black;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  color: black;
+}
+
+.buttons a {
+  margin: 0.25rem;
+  width: 40%;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  cursor: pointer;
+  border-radius: 54px;
+  background-color: #010c3f;
+  text-align: center;
+  color: white;
+  transition: background-color .25s;
+}
+
+.buttons a:hover {
+  background-color: rgba(108, 65, 233, .7);
+}

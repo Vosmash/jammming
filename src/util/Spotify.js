@@ -1,8 +1,8 @@
 const clientID = '061f2a636fbf4af3a1b5ffc8db23d8bb';
-const redirectURI = "https://vosmash.github.io/jammming/";
+const redirectURI = "http://localhost:3000/";
 let accessToken = null;
 
-const Spotify = {
+export let Spotify = {
   getAccessToken() {
     const tokenFound = window.location.href.match(/access_token=([^&]*)/);
     let expiresIn = window.location.href.match(/expires_in=([^&]*)/);
@@ -20,6 +20,20 @@ const Spotify = {
       window.location = url
     }
 },
+
+  getUserID() {
+    const endpoint = 'https://api.spotify.com/v1/me'
+
+    fetch(endpoint, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    }).then(response => {
+      return response.json();
+    }).then(jsonResponse => {
+      return jsonResponse.id;
+    })
+  },
 
   search(term) {
     Spotify.getAccessToken();
@@ -44,13 +58,9 @@ const Spotify = {
 
   savePlaylist(playlistName, trackURIs) {
     Spotify.getAccessToken();
-    const endpoint = 'https://api.spotify.com/v1/me'
+    let userID = Spotify.getUserID();
 
-    fetch(endpoint, { headers: {Authorization: `Bearer ${accessToken}`} }).then(response => {
-      return response.json();
-    }).then(jsonResponse => {
-      let userID = jsonResponse.id
-      return fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, {
+    fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -70,8 +80,46 @@ const Spotify = {
           body: JSON.stringify({ uris: trackURIs })
           })
       })
-    });
-  }
-}
+    },
 
-export default Spotify
+    getPlaylists() {
+      Spotify.getAccessToken();
+      fetch(`https://api.spotify.com/v1/me/playlists`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      }).then(response => {
+        return response.json();
+      }).then(jsonResponse => {
+        let playlists = jsonResponse.items
+        let trackDataPromises = playlists.map(playlist => {
+          let responsePromise = fetch(playlist.tracks.href, {
+            headers: { Authorization: `Bearer ${accessToken}`}
+          })
+          let trackDataPromise = responsePromise.then(response => {
+            return response.json()
+          })
+          return trackDataPromise
+        })
+        let allTracksDatasPromises = Promise.all(trackDataPromises)
+        let playlistsPromise = allTracksDatasPromises.then(trackDatas => {
+          trackDatas.forEach((trackData, i) => {
+            playlists[i].trackDatas = trackData.items.map(item => item.track)
+          })
+          return playlists
+        })
+       return playlistsPromise
+      }).then(playlists => {
+        let usersPlaylists = playlists.map(playlist => ({
+            id: playlist.id,
+            name: playlist.name,
+            imgSrc: playlist.images[0].url,
+            songs: playlist.trackDatas.map(song => ({
+              name: song.name,
+              artist: song.artists[0].name
+            }))
+          }))
+        return console.log(usersPlaylists)
+      })
+    }
+};

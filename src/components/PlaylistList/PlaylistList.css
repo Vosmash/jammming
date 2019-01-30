@@ -1,0 +1,22 @@
+.PlaylistCom {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0.4rem;
+  width: 30%;
+}
+
+.PlaylistCom h2 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.song-list {
+  list-style: none;
+  padding-left: 0px;
+  margin-top: 0px;
+}
+
+.song-list li {
+  padding-bottom: 0.2rem;
+}
